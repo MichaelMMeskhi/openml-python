@@ -207,8 +207,7 @@ class OpenMLSupervisedTask(OpenMLTask, ABC):
         self.target_name = target_name
         self.split = None
 
-    def get_X_and_y(self) -> \
-            Tuple[np.ndarray, np.ndarray]:
+    def get_X_and_y(self) -> Tuple[np.ndarray, np.ndarray]:
         """Get data associated with the current task.
 
         Returns
