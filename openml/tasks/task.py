@@ -3,6 +3,7 @@ import os
 from collections import OrderedDict
 from typing import Union, Tuple, Dict, List, Optional
 from abc import ABC
+from warnings import warn
 
 import xmltodict
 import numpy as np
@@ -201,7 +202,6 @@ class OpenMLSupervisedTask(OpenMLTask, ABC):
         self.estimation_procedure = dict()
         self.estimation_procedure["type"] = estimation_procedure_type
         self.estimation_procedure["parameters"] = estimation_parameters
-        self.estimation_parameters = estimation_parameters
         self.estimation_procedure["data_splits_url"] = data_splits_url
         self.estimation_procedure_id = estimation_procedure_id
         self.target_name = target_name
@@ -243,6 +243,22 @@ class OpenMLSupervisedTask(OpenMLTask, ABC):
         )
 
         return task_container
+
+    @property
+    def estimation_parameters(self):
+
+        warn(
+            "The estimation_parameters attribute will be "
+            "deprecated in the future, please use "
+            "estimation_procedure['parameters'] instead",
+            PendingDeprecationWarning
+        )
+        return self.estimation_procedure["parameters"]
+
+    @estimation_parameters.setter
+    def estimation_parameters(self, est_parameters):
+
+        self.estimation_procedure["parameters"] = est_parameters
 
 
 class OpenMLClassificationTask(OpenMLSupervisedTask):
@@ -315,6 +331,9 @@ class OpenMLClusteringTask(OpenMLTask):
             task_type_id: Union[int, str],
             task_type: str,
             data_set_id: int,
+            estimation_procedure_type: str,
+            estimation_parameters: Dict[str, str],
+            data_splits_url: str,
             evaluation_measure: Optional[str] = None,
             target_name: Optional[str] = None,
             task_id: Optional[Union[int, str]] = None,
@@ -328,6 +347,10 @@ class OpenMLClusteringTask(OpenMLTask):
             evaluation_measure=evaluation_measure,
         )
         self.target_name = target_name
+        self.estimation_procedure = dict()
+        self.estimation_procedure["type"] = estimation_procedure_type
+        self.estimation_procedure["parameters"] = estimation_parameters
+        self.estimation_procedure["data_splits_url"] = data_splits_url
         self.estimation_procedure_id = estimation_procedure_id
 
     def _to_dict(self) -> Dict[str, OrderedDict]:
@@ -386,7 +409,6 @@ class OpenMLLearningCurveTask(OpenMLClassificationTask):
         self.target_name = target_name
         self.class_labels = class_labels
         self.cost_matrix = cost_matrix
-        self.estimation_procedure["data_splits_url"] = data_splits_url
         self.split = None
 
         if cost_matrix is not None:
