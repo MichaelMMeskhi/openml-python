@@ -21,13 +21,14 @@ class OpenMLTask(ABC):
             task_type_id: Union[int, str],
             task_type: str,
             data_set_id: Union[int, str],
-            evaluation_measure: Optional[str],
+            estimation_procedure_id: int = 1,
             estimation_procedure_type: Optional[str] = None,
             estimation_parameters: Optional[Dict[str, str]] = None,
+            evaluation_measure: Optional[str] = None,
             data_splits_url: Optional[str] = None,
-            estimation_procedure_id: int = 1
     ):
-        self.task_id = int(task_id)
+
+        self.task_id = int(task_id) if task_id is not None else None
         self.task_type_id = int(task_type_id)
         self.task_type = task_type
         self.dataset_id = int(data_set_id)
@@ -198,24 +199,24 @@ class OpenMLSupervisedTask(OpenMLTask, ABC):
             task_type_id: Union[int, str],
             task_type: str,
             data_set_id: int,
-            evaluation_measure: str,
             target_name: str,
+            estimation_procedure_id: int = 1,
             estimation_procedure_type: Optional[str] = None,
             estimation_parameters: Optional[Dict[str, str]] = None,
+            evaluation_measure: Optional[str] = None,
             data_splits_url: Optional[str] = None,
             task_id: Optional[Union[int, str]] = None,
-            estimation_procedure_id: int = 1,
     ):
         super(OpenMLSupervisedTask, self).__init__(
             task_id=task_id,
             task_type_id=task_type_id,
             task_type=task_type,
             data_set_id=data_set_id,
-            evaluation_measure=evaluation_measure,
+            estimation_procedure_id=estimation_procedure_id,
             estimation_procedure_type=estimation_procedure_type,
             estimation_parameters=estimation_parameters,
+            evaluation_measure=evaluation_measure,
             data_splits_url=data_splits_url,
-            estimation_procedure_id=estimation_procedure_id
         )
 
         self.target_name = target_name
@@ -273,15 +274,15 @@ class OpenMLClassificationTask(OpenMLSupervisedTask):
             task_type_id: Union[int, str],
             task_type: str,
             data_set_id: int,
-            evaluation_measure: str,
             target_name: str,
+            estimation_procedure_id: int = 1,
             estimation_procedure_type: Optional[str] = None,
             estimation_parameters: Optional[Dict[str, str]] = None,
+            evaluation_measure: Optional[str] = None,
             data_splits_url: Optional[str] = None,
             task_id: Optional[Union[int, str]] = None,
             class_labels: Optional[List[str]] = None,
             cost_matrix: Optional[np.ndarray] = None,
-            estimation_procedure_id: int = 1,
     ):
 
         super(OpenMLClassificationTask, self).__init__(
@@ -289,12 +290,12 @@ class OpenMLClassificationTask(OpenMLSupervisedTask):
             task_type_id=task_type_id,
             task_type=task_type,
             data_set_id=data_set_id,
+            estimation_procedure_id=estimation_procedure_id,
             estimation_procedure_type=estimation_procedure_type,
             estimation_parameters=estimation_parameters,
             evaluation_measure=evaluation_measure,
             target_name=target_name,
             data_splits_url=data_splits_url,
-            estimation_procedure_id=estimation_procedure_id
         )
         self.class_labels = class_labels
         self.cost_matrix = cost_matrix
@@ -310,24 +311,24 @@ class OpenMLRegressionTask(OpenMLSupervisedTask):
             task_type: str,
             data_set_id: int,
             target_name: str,
+            estimation_procedure_id: int = 7,
             estimation_procedure_type: Optional[str] = None,
             estimation_parameters: Optional[Dict[str, str]] = None,
             data_splits_url: Optional[str] = None,
             task_id: Optional[Union[int, str]] = None,
             evaluation_measure: Optional[str] = None,
-            estimation_procedure_id: int = 7,
     ):
         super(OpenMLRegressionTask, self).__init__(
             task_id=task_id,
             task_type_id=task_type_id,
             task_type=task_type,
             data_set_id=data_set_id,
+            estimation_procedure_id=estimation_procedure_id,
             estimation_procedure_type=estimation_procedure_type,
             estimation_parameters=estimation_parameters,
             evaluation_measure=evaluation_measure,
             target_name=target_name,
             data_splits_url=data_splits_url,
-            estimation_procedure_id=estimation_procedure_id
         )
 
 
@@ -337,13 +338,13 @@ class OpenMLClusteringTask(OpenMLTask):
             task_type_id: Union[int, str],
             task_type: str,
             data_set_id: int,
-            evaluation_measure: Optional[str] = None,
-            target_name: Optional[str] = None,
+            estimation_procedure_id: int = 17,
             task_id: Optional[Union[int, str]] = None,
             estimation_procedure_type: Optional[str] = None,
             estimation_parameters: Optional[Dict[str, str]] = None,
             data_splits_url: Optional[str] = None,
-            estimation_procedure_id: int = 17
+            evaluation_measure: Optional[str] = None,
+            target_name: Optional[str] = None,
     ):
         super(OpenMLClusteringTask, self).__init__(
             task_id=task_id,
@@ -351,10 +352,10 @@ class OpenMLClusteringTask(OpenMLTask):
             task_type=task_type,
             data_set_id=data_set_id,
             evaluation_measure=evaluation_measure,
+            estimation_procedure_id=estimation_procedure_id,
             estimation_procedure_type=estimation_procedure_type,
             estimation_parameters=estimation_parameters,
             data_splits_url=data_splits_url,
-            estimation_procedure_id=estimation_procedure_id
         )
 
         self.target_name = target_name
@@ -382,6 +383,7 @@ class OpenMLLearningCurveTask(OpenMLClassificationTask):
             task_type: str,
             data_set_id: int,
             target_name: str,
+            estimation_procedure_id: int = 13,
             estimation_procedure_type: Optional[str] = None,
             estimation_parameters: Optional[Dict[str, str]] = None,
             data_splits_url: Optional[str] = None,
@@ -389,13 +391,13 @@ class OpenMLLearningCurveTask(OpenMLClassificationTask):
             evaluation_measure: Optional[str] = None,
             class_labels: Optional[List[str]] = None,
             cost_matrix: Optional[np.ndarray] = None,
-            estimation_procedure_id: int = 13,
     ):
         super(OpenMLLearningCurveTask, self).__init__(
             task_id=task_id,
             task_type_id=task_type_id,
             task_type=task_type,
             data_set_id=data_set_id,
+            estimation_procedure_id=estimation_procedure_id,
             estimation_procedure_type=estimation_procedure_type,
             estimation_parameters=estimation_parameters,
             evaluation_measure=evaluation_measure,
@@ -403,7 +405,6 @@ class OpenMLLearningCurveTask(OpenMLClassificationTask):
             data_splits_url=data_splits_url,
             class_labels=class_labels,
             cost_matrix=cost_matrix,
-            estimation_procedure_id=estimation_procedure_id
         )
 
 
