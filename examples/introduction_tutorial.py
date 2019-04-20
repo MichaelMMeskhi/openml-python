@@ -52,7 +52,7 @@ An introduction to OpenML, followed up by a simple example.
 import openml
 from sklearn import neighbors
 
-openml.config.start_use_example_configuration()
+openml.config.start_using_configuration_for_example()
 
 ############################################################################
 # When using the main server, instead make sure your apikey is configured.
